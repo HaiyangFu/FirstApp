@@ -16,4 +16,6 @@
     <string name="btn_money_reset">Reset</string>
     <string name="inputMoney">Please input money </string>
     <string name="ShowMoney">Hello </string>
+    <string name="config_btn">CONFIG</string>
+    <string name="btn_save">Save</string>
 </resources>
