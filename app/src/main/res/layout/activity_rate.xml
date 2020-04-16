@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RateActivity">
+
+    <EditText
+        android:id="@+id/inp_rmb"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:hint="@string/inputMoney"
+        android:textSize="30dp"
+        android:inputType="numberDecimal" />
+    <TextView
+        android:id="@+id/show_money"
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+
+        android:textSize="30dp"
+        android:text="@string/ShowMoney" />
+
+    <Button
+        android:id="@+id/btn_dollar"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:onClick="onClick"
+        android:text="@string/btn_Dollar" />
+
+    <Button
+        android:id="@+id/button_euro"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:onClick="onClick"
+        android:text="@string/btn_Euro" />
+
+    <Button
+        android:id="@+id/button_mon"
+        android:layout_width="match_parent"
+        android:onClick="onClick"
+        android:layout_height="75dp"
+
+        android:text="@string/btn_Mon" />
+
+    <Button
+        android:id="@+id/but_reset"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_margin="85dp"
+        android:text="@string/btn_money_reset" />
+
+
+</LinearLayout>

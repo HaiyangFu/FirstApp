@@ -14,6 +14,6 @@
     <string name="btn_Euro">Euro</string>
     <string name="btn_Mon">Mon</string>
     <string name="btn_money_reset">Reset</string>
-    <string name="inputMoney"> </string>
-    <string name="ShowMoney"> </string>
+    <string name="inputMoney">Please input money </string>
+    <string name="ShowMoney">Hello </string>
 </resources>
