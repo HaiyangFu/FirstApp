@@ -32,8 +32,8 @@ public class ConfigActivity extends AppCompatActivity {
         dollarText= (EditText)findViewById(R.id.dollar_rate);
         dollarText= (EditText)findViewById(R.id.euro_rate);
         dollarText= (EditText)findViewById(R.id.won_rate);
-        //显示
-        dollarText.setText(String.valueOf(dollar2));
+        //显示数据到控件
+         dollarText.setText(String.valueOf(dollar2));
         euroText.setText(String.valueOf(euro2));
         wonText.setText(String.valueOf(won2));
 

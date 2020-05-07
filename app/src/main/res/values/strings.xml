@@ -18,4 +18,6 @@
     <string name="ShowMoney">Hello </string>
     <string name="config_btn">CONFIG</string>
     <string name="btn_save">Save</string>
+    <string name="Label_open_list">OpenList</string>
+    <string name="show_name">Hello</string>
 </resources>
