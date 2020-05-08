@@ -43,6 +43,7 @@ public class RateListActivity extends ListActivity implements Runnable {
                     Thread t=new Thread();
                     t.start();
                 }
+                super.handleMessage(msg);
             }
         };
     }
@@ -70,6 +71,7 @@ public class RateListActivity extends ListActivity implements Runnable {
             catch (IOException e) {
             e.printStackTrace();
         }
+        //返回主线程
         Message msg = handler.obtainMessage(7);
          msg.obj = retList;
         handler.sendMessage(msg);

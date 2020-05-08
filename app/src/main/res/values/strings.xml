@@ -20,4 +20,6 @@
     <string name="btn_save">Save</string>
     <string name="Label_open_list">OpenList</string>
     <string name="show_name">Hello</string>
+    <string name="keyWords">please input key words</string>
+    <string name="search_btn">Search</string>
 </resources>
