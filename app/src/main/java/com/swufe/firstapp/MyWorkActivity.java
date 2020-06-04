@@ -1,9 +1,7 @@
 package com.swufe.firstapp;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,10 +28,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,8 +38,11 @@ public class MyWorkActivity extends AppCompatActivity implements Runnable, Adapt
     String TAG = "MyWorkActivity";
     Handler handler;
     String UpdateDate;
-    List<String> list2;
-    String word = list2.toString();
+    private SimpleAdapter listItemAdapter;
+    String word;
+    final ListView listView=(ListView)findViewById(R.id.work_list);
+
+    //String word = list2.toString();
 
 
     @SuppressLint("HandlerLeak")
@@ -52,38 +51,45 @@ public class MyWorkActivity extends AppCompatActivity implements Runnable, Adapt
         super.onCreate(savedInstanceState);
          setContentView(R.layout.activity_my_work);
           inp = (EditText)findViewById(R.id.keyWords);
-          final ListView listView=(ListView)findViewById(R.id.work_list);
+
           //获取SP里保存的数据
-        SharedPreferences sharedPreferences = getSharedPreferences("mywork", Activity.MODE_PRIVATE);
-        UpdateDate = sharedPreferences.getString("Update_date", "");
-        word = sharedPreferences.getString("word","");
-
-        //从当前系统获取时间
-        Date today = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        final String todayStr = sdf.format(today);
-
-        //判断时间是否相等
-        while (!todayStr.equals(UpdateDate+7)) {
+//        SharedPreferences sharedPreferences = getSharedPreferences("mywork", Activity.MODE_PRIVATE);
+//        UpdateDate = sharedPreferences.getString("Update_date", "");
+//        word = sharedPreferences.getString("word","");
+//
+//        //从当前系统获取时间
+//        Date today = Calendar.getInstance().getTime();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        final String todayStr = sdf.format(today);
+//
+//        //判断时间是否相等
+//        while (!todayStr.equals(UpdateDate+7)) {
             //开启子线程
             Thread t = new Thread(this);
             t.start();
             Log.i(TAG, "OnCreate:需要更新");
-        }
+//        }
 
         handler=new Handler(){
             @Override
             public void handleMessage(@NonNull Message msg) {
                 if(msg.what==7) {
-                    list2 = (List<String>) msg.obj;
-                    ListAdapter adapter = new ArrayAdapter<String>(MyWorkActivity.this, android.R.layout.simple_expandable_list_item_1, list2);
+                    //List<HashMap<String,String>> list2 = (List<HashMap<String,String>>) msg.obj;
+//                    List<HashMap<String,String>> list2 = (List<HashMap<String,String>>) msg.obj;
+//                    listItemAdapter= new SimpleAdapter(MyWorkActivity.this,list2,
+//                            R.layout.list_item,
+//                            new String[]{"myText","finalNet"},
+//                            new int[]{R.id.myText,R.id.finalNet});
+//                           listView.setAdapter(listItemAdapter);
+                    List<String> list2 = (List<String>) msg.obj;
+                    ListAdapter adapter = new ArrayAdapter<String>(MyWorkActivity.this, android.R.layout.simple_expandable_list_item_1,list2);
                     listView.setAdapter(adapter);
-                    //保存更新
-                    SharedPreferences sharedPreferences = getSharedPreferences("mywork", Activity.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("new_text",word);
-                    editor.putString("Update_date", todayStr);
-                    editor.apply();
+//                    //保存更新
+//                    SharedPreferences sharedPreferences = getSharedPreferences("mywork", Activity.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putString("new_text",word);
+//                    editor.putString("Update_date", todayStr);
+//                    editor.apply();
                 }
                super.handleMessage(msg);
             }
@@ -91,40 +97,54 @@ public class MyWorkActivity extends AppCompatActivity implements Runnable, Adapt
     }
     public void onClick(View btn) {
         String str = inp.getText().toString();
-        compileKeyWord(word,str);
-
-    }
+        while (str.length() > 0) {
+            if (btn.getId() == R.id.search_btn) {
+                Log.i(TAG, "onClick: str = " + str);
+                compileKeyWord(word, str); }
+        } }
     //关键字匹配
-    public boolean compileKeyWord(String word, String keyWord) {
+    public String compileKeyWord(String word, String keyWord) {
         Pattern pn = Pattern.compile(keyWord+"\\w|\\w"+keyWord+"\\w|\\w"+keyWord);
         Matcher mr = null;
         mr = pn.matcher(word);
         if (mr.find())  {
-            return true;
+            return word=mr.toString();
         } else {
-            return false;
+            return "can't find";
         }
+
     }
 
     @Override
     public void run() {
         Log.i(TAG, "run");
         List list=new ArrayList<String>();
+        Bundle bundle = new Bundle();
         //获取网络数据
         URL url;
         try {
             Document doc = null;
             doc = Jsoup.connect("https://www.swufe.edu.cn/").get();
-            //Log.i(TAG, "run: html=" + html);
+
             Log.i(TAG, "run:" + doc.title());
             Elements tables = doc.getElementsByClass("i-noticlist");
 
             Element tb =  tables.get(0);
             Elements tds = tb.getElementsByTag("li");
+
             for(int i=0;i<tds.size();i++){
-                Element td1 = tds.get(i);
+                Element td1 = tds.get(i) ;
                 Log.i(TAG, "run: text = "+td1.text());
-                list.add(td1.text());
+                String net0 = tds.get(i).getElementsByTag("a").attr("href");
+                Log.i(TAG, "run: herf ="+net0);
+                String finalNet = "https://www.swufe.edu.cn/"+net0;
+                Log.i(TAG, "run: finalNet = "+finalNet);
+                word = td1.text();
+                list.add(word);
+                bundle.putString("finalNet",finalNet);
+
+
+
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -152,16 +172,14 @@ public class MyWorkActivity extends AppCompatActivity implements Runnable, Adapt
 
         return out.toString();
     }
-    @Override
+    //@Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //打开新的页面
-        Intent newPage = new Intent(this,rateCalcActivity.class);
+        Intent newPage = new Intent(this,newPageActivity.class);
+
+
         startActivity(newPage);
+
 
     }
 }
-//url = new URL("https://www.swufe.edu.cn/");
-//            HttpURLConnection http = (HttpURLConnection) url.openConnection();
-//            InputStream in = http.getInputStream();
-//            String html = inputStream2String(in);
-//            Document doc = Jsoup.parse(html);
