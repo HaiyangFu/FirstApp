@@ -81,7 +81,7 @@ public class MyList2Activity extends ListActivity implements Runnable, AdapterVi
     }
 
     public void run() {
-        //获取网络数据，放入List带回到主线程中
+        //获取网络数据，放入 List 带回到主线程中
         List<HashMap<String,String>> retlist=new ArrayList<HashMap<String,String>>();
         Document doc=null;
         try {
@@ -115,7 +115,7 @@ public class MyList2Activity extends ListActivity implements Runnable, AdapterVi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        HashMap<String,String> map= (HashMap<String, String>) getListView().getItemAtPosition(position);
+        HashMap<String,String> map = (HashMap<String, String>) getListView().getItemAtPosition(position);
         String titleStr = map.get("ItemTitle");
         String detailStr = map.get("ItemDetail");
 
