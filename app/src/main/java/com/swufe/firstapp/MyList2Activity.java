@@ -137,7 +137,7 @@ public class MyList2Activity extends ListActivity implements Runnable, AdapterVi
 
         //构造对话框进行确认操作
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("提示").setMessage("确认是否删除该数据").setPositiveButton("是", new DialogInterface.OnClickListener() {
+        builder.setTitle("提 示").setMessage("确认是否删除该数据").setPositiveButton("是", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                // 删除数据操作
